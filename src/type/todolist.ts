@@ -1,7 +1,7 @@
-interface IntTodoList {
+interface TodoItem {
   id: number
   title: string
   completed: boolean
 }
 
-export type { IntTodoList }
+export type { TodoItem }
