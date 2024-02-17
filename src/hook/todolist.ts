@@ -59,7 +59,7 @@ export default function TodoListHooks() {
     todo.title = beforeEditCache
   }
 
-  function removeCompleted(){
+  function removeCompleted() {
     todos.value = filters.active(todos.value)
   }
 
@@ -70,15 +70,15 @@ export default function TodoListHooks() {
 
   // 处理路由
   window.addEventListener('hashchange', onHashChange)
-  onHashChange();
+  onHashChange()
 
   function onHashChange() {
     const route = window.location.hash.replace(/#\/?/, '') as keyof typeof filters
     if (filters[route]) {
-        visibility.value = route
-    }else {
-        window.location.hash = ''
-        visibility.value = 'all'
+      visibility.value = route
+    } else {
+      window.location.hash = ''
+      visibility.value = 'all'
     }
   }
 
