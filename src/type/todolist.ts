@@ -1,7 +1,7 @@
 interface IntTodoList {
-    id: number;
-    title: string;
-    isFinished: boolean;
+  id: number
+  title: string
+  completed: boolean
 }
 
 export type { IntTodoList }

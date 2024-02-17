@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import TodoListHooks from '@/hook/todolist';
+import TodoListHooks from '@/hook/todolist'
 
-const {data, addTodo} = TodoListHooks()
-
+const { todos, addTodo } = TodoListHooks()
 </script>
 
 <template>
   <div class="todolist">
     <h1>This is an TodoList page</h1>
-    <input class="new-todo" autofocus placeholder="What needs to be done?" @keyup.enter="addTodo">
+    <input class="new-todo" autofocus placeholder="What needs to be done?" @keyup.enter="addTodo" />
   </div>
 </template>
 
@@ -18,5 +17,4 @@ const {data, addTodo} = TodoListHooks()
   .todolist {
   }
 }
-
 </style>
