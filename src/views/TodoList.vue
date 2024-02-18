@@ -31,8 +31,8 @@ function addTodo(e: KeyboardEvent): void {
 }
 
 function toggleAll(e: Event) {
-  const input = e.target as HTMLInputElement
-  todos.value.forEach((todo) => (todo.completed = input.checked))
+  const checked = (e.target as HTMLInputElement).checked
+  todos.value.forEach((todo) => (todo.completed = checked))
 }
 
 let beforeEditCache = ''
@@ -49,8 +49,9 @@ function removeTodo(todo: TodoItem) {
 function doneEdit(todo: TodoItem) {
   if (editedTodo.value) {
     editedTodo.value = null
-    todo.title = todo.title.trim()
-    if (!todo.title) removeTodo(todo)
+    const title = todo.title.trim()
+    if (title) todo.title = title
+    else removeTodo(todo)
   }
 }
 
