@@ -45,7 +45,8 @@ export default function TodoListHooks() {
   }
 
   function doneEdit(todo: TodoItem) {
-    const title = editedTodo.value!.title.trim()
+    if (!editedTodo.value) throw new Error('editedTodo not find')
+    const title = editedTodo.value.title.trim()
     if (title) todo.title = title
     else removeTodo(todo)
     editedTodo.value = null
