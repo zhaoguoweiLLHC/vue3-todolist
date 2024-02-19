@@ -35,11 +35,8 @@ function toggleAll(e: Event) {
   todos.value.forEach((todo) => (todo.completed = checked))
 }
 
-let beforeEditCache = ''
-
 function editTodo(todo: TodoItem) {
-  beforeEditCache = todo.title
-  editedTodo.value = todo
+  editedTodo.value = JSON.parse(JSON.stringify(todo))
 }
 
 function removeTodo(todo: TodoItem) {
@@ -47,17 +44,14 @@ function removeTodo(todo: TodoItem) {
 }
 
 function doneEdit(todo: TodoItem) {
-  if (editedTodo.value) {
-    editedTodo.value = null
-    const title = todo.title.trim()
-    if (title) todo.title = title
-    else removeTodo(todo)
-  }
+  const title = editedTodo.value!.title.trim()
+  if (title) todo.title = title
+  else removeTodo(todo)
+  editedTodo.value = null
 }
 
-function cancelEdit(todo: TodoItem) {
+function cancelEdit() {
   editedTodo.value = null
-  todo.title = beforeEditCache
 }
 
 function removeCompleted() {
@@ -113,7 +107,7 @@ function onFoucs({ el }: { el: HTMLInputElement }) {
           v-for="todo in filteredTodos"
           class="todo"
           :key="todo.id"
-          :class="{ completed: todo.completed, editing: todo === editedTodo }"
+          :class="{ completed: todo.completed, editing: todo.id === editedTodo?.id }"
         >
           <div class="view">
             <input class="toggle" type="checkbox" v-model="todo.completed" />
@@ -121,14 +115,14 @@ function onFoucs({ el }: { el: HTMLInputElement }) {
             <button class="destroy" @click="removeTodo(todo)"></button>
           </div>
           <input
-            v-if="todo === editedTodo"
+            v-if="todo.id === editedTodo?.id"
             class="edit"
             type="text"
-            v-model="todo.title"
+            v-model="editedTodo.title"
             @vue:mounted="onFoucs"
             @blur="doneEdit(todo)"
             @keyup.enter="doneEdit(todo)"
-            @keyup.escape="cancelEdit(todo)"
+            @keyup.escape="cancelEdit"
           />
         </li>
       </ul>
