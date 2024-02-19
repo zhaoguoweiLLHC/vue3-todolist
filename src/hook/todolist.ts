@@ -31,15 +31,13 @@ export default function TodoListHooks() {
   }
 
   function toggleAll(e: Event) {
-    const input = e.target as HTMLInputElement
-    todos.value.forEach((todo) => (todo.completed = input.checked))
+    const checked = (e.target as HTMLInputElement).checked
+    todos.value.forEach((todo) => (todo.completed = checked))
   }
 
-  let beforeEditCache = ''
 
   function editTodo(todo: TodoItem) {
-    beforeEditCache = todo.title
-    editedTodo.value = todo
+    editedTodo.value = JSON.parse(JSON.stringify(todo))
   }
 
   function removeTodo(todo: TodoItem) {
@@ -47,16 +45,14 @@ export default function TodoListHooks() {
   }
 
   function doneEdit(todo: TodoItem) {
-    if (editedTodo.value) {
-      editedTodo.value = null
-      todo.title = todo.title.trim()
-      if (!todo.title) removeTodo(todo)
-    }
+    const title = editedTodo.value!.title.trim()
+    if (title) todo.title = title
+    else removeTodo(todo)
+    editedTodo.value = null
   }
 
-  function cancelEdit(todo: TodoItem) {
+  function cancelEdit() {
     editedTodo.value = null
-    todo.title = beforeEditCache
   }
 
   function removeCompleted() {

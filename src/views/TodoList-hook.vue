@@ -46,7 +46,7 @@ function onFoucs({ el }: { el: HTMLInputElement }) {
           v-for="todo in filteredTodos"
           class="todo"
           :key="todo.id"
-          :class="{ completed: todo.completed, editing: todo === editedTodo }"
+          :class="{ completed: todo.completed, editing: todo.id === editedTodo?.id }"
         >
           <div class="view">
             <input class="toggle" type="checkbox" v-model="todo.completed" />
@@ -54,14 +54,14 @@ function onFoucs({ el }: { el: HTMLInputElement }) {
             <button class="destroy" @click="removeTodo(todo)"></button>
           </div>
           <input
-            v-if="todo === editedTodo"
+            v-if="todo.id === editedTodo?.id"
             class="edit"
             type="text"
-            v-model="todo.title"
+            v-model="editedTodo.title"
             @vue:mounted="onFoucs"
             @blur="doneEdit(todo)"
             @keyup.enter="doneEdit(todo)"
-            @keyup.escape="cancelEdit(todo)"
+            @keyup.escape="cancelEdit"
           />
         </li>
       </ul>
