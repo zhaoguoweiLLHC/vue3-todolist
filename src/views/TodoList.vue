@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TodoItem } from '@/type/todolist'
-import { ref, computed, watchEffect } from 'vue'
+import { ref, computed, watchEffect, onUnmounted } from 'vue'
 
 const STORAGE_KEY = 'vue-todomvc'
 
@@ -63,10 +63,6 @@ watchEffect(() => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(todos.value))
 })
 
-// 处理路由
-window.addEventListener('hashchange', onHashChange)
-onHashChange()
-
 function onHashChange() {
   const route = window.location.hash.replace(/#\/?/, '') as keyof typeof filters
   if (filters[route]) {
@@ -76,6 +72,15 @@ function onHashChange() {
     visibility.value = 'all'
   }
 }
+
+onHashChange()
+
+// 处理路由
+window.addEventListener('hashchange', onHashChange)
+onUnmounted(()=>{
+  window.removeEventListener('hashchange', onHashChange)
+})
+
 
 function onFoucs({ el }: { el: HTMLInputElement }) {
   el.focus()

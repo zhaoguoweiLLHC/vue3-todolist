@@ -1,5 +1,5 @@
 import type { TodoItem } from '@/type/todolist'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, onUnmounted, ref, watchEffect } from 'vue'
 
 const STORAGE_KEY = 'vue-todomvc'
 
@@ -64,10 +64,6 @@ export default function TodoListHooks() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos.value))
   })
 
-  // 处理路由
-  window.addEventListener('hashchange', onHashChange)
-  onHashChange()
-
   function onHashChange() {
     const route = window.location.hash.replace(/#\/?/, '') as keyof typeof filters
     if (filters[route]) {
@@ -77,6 +73,13 @@ export default function TodoListHooks() {
       visibility.value = 'all'
     }
   }
+
+  // 处理路由
+  onHashChange()
+  window.addEventListener('hashchange', onHashChange)
+  onUnmounted(()=>{
+    window.removeEventListener('hashchange', onHashChange)
+  })
 
   return {
     todos,
