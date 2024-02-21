@@ -77,10 +77,9 @@ onHashChange()
 
 // 处理路由
 window.addEventListener('hashchange', onHashChange)
-onUnmounted(()=>{
+onUnmounted(() => {
   window.removeEventListener('hashchange', onHashChange)
 })
-
 
 function onFoucs({ el }: { el: HTMLInputElement }) {
   el.focus()
