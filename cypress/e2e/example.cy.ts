@@ -46,7 +46,29 @@ describe('todolist', () => {
   })
 
   it('edit todo', () => {
-    
+    cy.get('.new-todo').type(`add 1{enter}`)
+    cy.get('.todo-list>.todo:last-child>.view>label').dblclick()
+    cy.get('.todo-list>.todo:last-child>.edit').should('be.visible')
+
+    cy.get('.todo-list>.todo:last-child>.edit').type('edit blur')
+    cy.get('.todo-list>.todo:last-child>.edit').blur()
+    cy.get('.todo-list>.todo:last-child>.view>label').should('have.text', 'add 1edit blur')
+  })
+  
+  it('edit todo enter', () => {
+    cy.get('.new-todo').type(`add 1{enter}`)
+    cy.get('.todo-list>.todo:last-child>.view>label').dblclick()
+    cy.get('.todo-list>.todo:last-child>.edit').type('edit enter{enter}')
+    cy.get('.todo-list>.todo:last-child>.view>label').should('have.text', 'add 1edit enter')
+  })
+
+ 
+
+  it('edit todo esc', () => {
+    cy.get('.new-todo').type(`add 1{enter}`)
+    cy.get('.todo-list>.todo:last-child>.view>label').dblclick()
+    cy.get('.todo-list>.todo:last-child>.edit').type('edit cancel{esc}')
+    cy.get('.todo-list>.todo:last-child>.view>label').should('have.text', 'add 1')
   })
 })
 
@@ -57,6 +79,4 @@ describe('todolist-hook', () => {
   it('visits the todolist-hook', () => {
     cy.contains('h1', 'Todos hook')
   })
-
-  it('check list data', () => {})
 })
