@@ -44,7 +44,8 @@ function removeTodo(todo: TodoItem) {
 }
 
 function doneEdit(todo: TodoItem) {
-  const title = editedTodo.value!.title.trim()
+  if(!editedTodo.value) return;
+  const title = editedTodo.value.title.trim()
   if (title) todo.title = title
   else removeTodo(todo)
   editedTodo.value = null
