@@ -25,4 +25,5 @@ test:
     - pnpm config set store-dir .pnpm-store
   script:
     - pnpm install
-    - pnpm run test:e2e:record
+    - pnpm run build
+    - npx start-server-and-test preview http://localhost:4173 'cypress run --e2e --record --parallel --browser chrome'
