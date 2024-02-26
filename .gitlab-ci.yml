@@ -1,7 +1,29 @@
 stages:
+  - build
   - test
 
-test:
+## Install npm dependencies and Cypress
+install:
+  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
+  stage: build
+  variables:
+    CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest-8 --activate
+    - pnpm config set store-dir .pnpm-store
+  script:
+    - pnpm install
+    - pnpm npm run build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .cache/*
+      - cache/Cypress
+      - node_modules
+      - dist
+
+ui-chrome-tests:
   # Uses official Cypress docker image for dependencies
   # https://docs.cypress.io/guides/continuous-integration/introduction#Official-Cypress-Docker-Images
   image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
@@ -11,19 +33,5 @@ test:
   variables:
     CYPRESS_RECORD_KEY: $CYPRESS_RECORD_KEY
   parallel: 2 # Uses 2 parallel instances
-  before_script:
-    - corepack enable
-    - corepack prepare pnpm@latest-8 --activate
-    - pnpm config set store-dir .pnpm-store
   script:
-    - pnpm install
-    - pnpm run build
-    - pnpm run test:e2e:record
-  # Caches dependencies using npm lock file as key
-  # https://docs.cypress.io/guides/continuous-integration/introduction#Caching
-  cache:
-    key:
-      files:
-        - pnpm-lock.yaml
-    paths:
-      - .pnpm-store
+    - npm run test:e2e:record
