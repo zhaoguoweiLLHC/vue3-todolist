@@ -20,12 +20,12 @@ ui-chrome-tests:
     - pnpm install
     - pnpm run build
     - pnpm run test:e2e:record
-  cache:
-    key:
-      files:
-        - pnpm-lock.yaml
-    paths:
-      - .pnpm-store
-      - cache/Cypress
-      - .cache/*
-      - node_modules
+  # cache:
+  #   key:
+  #     files:
+  #       - pnpm-lock.yaml
+  #   paths:
+  #     - .pnpm-store
+  #     - cache/Cypress
+  #     - .cache/*
+  #     - node_modules
