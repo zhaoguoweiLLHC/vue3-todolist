@@ -90,7 +90,7 @@ function onFoucs({ el }: { el: HTMLInputElement }) {
 <template>
   <section class="todoapp">
     <header class="header">
-      <h1>Todos</h1>
+      <h1>Todos1</h1>
       <input
         class="new-todo"
         autofocus
