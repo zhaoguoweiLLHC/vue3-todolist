@@ -14,7 +14,7 @@ install:
     - pnpm config set store-dir .pnpm-store
   script:
     - pnpm install
-    - pnpm npm run build
+    - pnpm run build
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
