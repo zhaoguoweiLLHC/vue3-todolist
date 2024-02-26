@@ -21,9 +21,9 @@ test:
     - pnpm run test:e2e:record
   # Caches dependencies using npm lock file as key
   # https://docs.cypress.io/guides/continuous-integration/introduction#Caching
-  cache:
-    key:
-      files:
-        - pnpm-lock.yaml
-    paths:
-      - .pnpm-store
+  # cache:
+  #   key:
+  #     files:
+  #       - pnpm-lock.yaml
+  #   paths:
+  #     - .pnpm-store
