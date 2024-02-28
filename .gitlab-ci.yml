@@ -16,14 +16,22 @@ stages:
 #     - node_modules
 #     - dist
 
-## Install npm dependencies and Cypress
-install:
+
+default:
   image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
-  stage: build
+
+.standard-before_script:
   before_script:
     - corepack enable
     - corepack prepare pnpm@latest-8 --activate
     - pnpm config set store-dir .pnpm-store
+
+
+## Install npm dependencies and Cypress
+install:
+  stage: build
+  extends:
+    - .standard-rules
   script:
     - pnpm install
     - pnpm run build
@@ -32,14 +40,14 @@ install:
       - "dist/"
 
 ui-chrome-tests:
-  # Uses official Cypress docker image for dependencies
-  # https://docs.cypress.io/guides/continuous-integration/introduction#Official-Cypress-Docker-Images
-  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
   stage: test
   # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
   # in GitLab repo → Settings → CI/CD → Variables
   variables:
     CYPRESS_RECORD_KEY: $CYPRESS_RECORD_KEY
   parallel: 2 # Uses 2 parallel instances
+  extends:
+    - .standard-rules
   script:
-    - npm run test:e2e:record
+    - pnpm install
+    - pnpm run test:e2e:record
