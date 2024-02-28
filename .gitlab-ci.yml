@@ -66,8 +66,7 @@ pages:
   dependencies:
     - build-job
   script:
-    - mkdir -p public/vue3-todolist
-    - mv dist/ public/vue3-todolist/
+    - mv dist/ public/
   artifacts:
     paths:
       - "public/"
