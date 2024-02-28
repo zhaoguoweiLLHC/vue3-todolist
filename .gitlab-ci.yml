@@ -31,7 +31,7 @@ default:
 install:
   stage: build
   extends:
-    - .standard-rules
+    - .standard-before_script
   script:
     - pnpm install
     - pnpm run build
@@ -47,7 +47,7 @@ ui-chrome-tests:
     CYPRESS_RECORD_KEY: $CYPRESS_RECORD_KEY
   parallel: 2 # Uses 2 parallel instances
   extends:
-    - .standard-rules
+    - .standard-before_script
   script:
     - pnpm install
     - pnpm run test:e2e:record
