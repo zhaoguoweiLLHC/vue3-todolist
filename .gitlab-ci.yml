@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - deploy
 
 # variables:
 #     CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
@@ -11,7 +12,6 @@ stages:
 #       - pnpm-lock.yaml
 #   paths:
 #     - .pnpm-store
-#     - .cache/*
 #     - cache/Cypress
 #     - node_modules
 #     - dist
@@ -25,13 +25,18 @@ default:
     - corepack enable
     - corepack prepare pnpm@latest-8 --activate
     - pnpm config set store-dir .pnpm-store
+.standard-rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH       # Run for all changes to the default branch
 
 
 ## Install npm dependencies and Cypress
-install:
+build-job:
   stage: build
   extends:
     - .standard-before_script
+    - .standard-rules
   script:
     - pnpm install
     - pnpm run build
@@ -41,6 +46,8 @@ install:
 
 ui-chrome-tests:
   stage: test
+  dependencies:
+    - build-job
   # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
   # in GitLab repo → Settings → CI/CD → Variables
   variables:
@@ -48,6 +55,20 @@ ui-chrome-tests:
   parallel: 2 # Uses 2 parallel instances
   extends:
     - .standard-before_script
+    - .standard-rules
   script:
     - pnpm install
     - pnpm run test:e2e:record
+
+pages:
+  stage: deploy
+  image: busybox
+  dependencies:
+    - build-job
+  script:
+    - mv dist/ public/
+  artifacts:
+    paths:
+      - "public/"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH      # Run for all changes to the default branch only
