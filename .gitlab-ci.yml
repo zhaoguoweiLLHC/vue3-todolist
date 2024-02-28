@@ -3,6 +3,7 @@ stages:
   - test
   - deploy
 
+# 加上缓存构建反而更慢了，应该是因为下载资源本身就很快了，做了加速处理，已经快过自己定义的缓存内容
 # variables:
 #     CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
 
