@@ -106,7 +106,7 @@ function onFoucs({ el }: { el: HTMLInputElement }) {
         :checked="remaining === 0"
         @change="toggleAll"
       />
-      <label for="toggle-all">Mark all as complete 1</label>
+      <label for="toggle-all">Mark all as complete</label>
       <ul class="todo-list">
         <li
           v-for="todo in filteredTodos"
