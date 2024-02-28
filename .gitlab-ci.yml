@@ -1,5 +1,35 @@
 stages:
+  - build
   - test
+
+variables:
+    CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
+
+cache:
+  key:
+    files:
+      - pnpm-lock.yaml
+  paths:
+    - .pnpm-store
+    - .cache/*
+    - cache/Cypress
+    - node_modules
+    - dist
+
+## Install npm dependencies and Cypress
+install:
+  image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
+  stage: build
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest-8 --activate
+    - pnpm config set store-dir .pnpm-store
+  script:
+    - pnpm install
+    - pnpm run build
+  artifacts:
+    paths:
+      - "dist/"
 
 ui-chrome-tests:
   # Uses official Cypress docker image for dependencies
@@ -10,22 +40,6 @@ ui-chrome-tests:
   # in GitLab repo → Settings → CI/CD → Variables
   variables:
     CYPRESS_RECORD_KEY: $CYPRESS_RECORD_KEY
-    CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
   parallel: 2 # Uses 2 parallel instances
-  before_script:
-    - corepack enable
-    - corepack prepare pnpm@latest-8 --activate
-    - pnpm config set store-dir .pnpm-store
   script:
-    - pnpm install
-    - pnpm run build
-    - pnpm run test:e2e:record
-  # cache:
-  #   key:
-  #     files:
-  #       - pnpm-lock.yaml
-  #   paths:
-  #     - .pnpm-store
-  #     - cache/Cypress
-  #     - .cache/*
-  #     - node_modules
+    - npm run test:e2e:record
