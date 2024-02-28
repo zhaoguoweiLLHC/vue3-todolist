@@ -2,19 +2,19 @@ stages:
   - build
   - test
 
-variables:
-    CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
+# variables:
+#     CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/Cypress'
 
-cache:
-  key:
-    files:
-      - pnpm-lock.yaml
-  paths:
-    - .pnpm-store
-    - .cache/*
-    - cache/Cypress
-    - node_modules
-    - dist
+# cache:
+#   key:
+#     files:
+#       - pnpm-lock.yaml
+#   paths:
+#     - .pnpm-store
+#     - .cache/*
+#     - cache/Cypress
+#     - node_modules
+#     - dist
 
 ## Install npm dependencies and Cypress
 install:
