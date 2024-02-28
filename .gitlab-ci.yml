@@ -66,6 +66,7 @@ pages:
   dependencies:
     - build-job
   script:
+    - rm -rf public/
     - mv dist/ public/
   artifacts:
     paths:
