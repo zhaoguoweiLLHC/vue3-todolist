@@ -31,6 +31,10 @@ default:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'  # Run for all changes to a merge request's source branch
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH       # Run for all changes to the default branch
 
+# For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
+# in GitLab repo → Settings → CI/CD → Variables
+variables:
+  CYPRESS_RECORD_KEY: $CYPRESS_RECORD_KEY
 
 ## Install npm dependencies and Cypress
 build-job:
@@ -49,10 +53,6 @@ ui-chrome-tests:
   stage: test
   dependencies:
     - build-job
-  # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
-  # in GitLab repo → Settings → CI/CD → Variables
-  variables:
-    CYPRESS_RECORD_KEY: $CYPRESS_RECORD_KEY
   parallel: 2 # Uses 2 parallel instances
   extends:
     - .standard-before_script
