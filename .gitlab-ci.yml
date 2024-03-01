@@ -61,6 +61,17 @@ ui-chrome-tests:
     - pnpm install
     - pnpm run test:e2e:record
 
+code-lint:
+  stage: test
+  dependencies: []
+  parallel: 2 # Uses 2 parallel instances
+  extends:
+    - .standard-before_script
+    - .standard-rules
+  script:
+    - pnpm install
+    - pnpm run lint
+
 pages:
   stage: deploy
   image: busybox
