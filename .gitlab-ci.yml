@@ -52,7 +52,7 @@ ui-chrome-tests:
   # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
   # in GitLab repo → Settings → CI/CD → Variables
   variables:
-    CYPRESS_RECORD_KEY: $CYPRESS_RECORD_KEY
+    CYPRESS_RECORD_KEY: $CYPRESS_RECORD_KEY1
   parallel: 2 # Uses 2 parallel instances
   extends:
     - .standard-before_script
